@@ -125,7 +125,6 @@ def graph(d):
 
 DF4 = df.copy()
 
-
 #DISCRETISATION loan_amnt________________________________________________________________________________
 df["loan_amnt"].hist(density=True)
 plt.show()
@@ -162,7 +161,7 @@ plt.show()
 c=df.copy()
 
 
-c["installment"]=pd.qcut(c["installment"], 4)
+c["installment"]=pd.qcut(c["installment"], 3)
 c["installment"].value_counts()   
 c["installment"].nunique()   
 d = c.head(19)
@@ -184,7 +183,7 @@ chi2, pvalue, degrees
 #On rejette H0, il y a dépendance entre les classes, c'est ce qu'on cherche
 cont.plot.bar()
 
-df["installment"]=pd.qcut(df["installment"], 4) #Avec quartiles les modalités sont plus stable que avec déciles
+df["installment"]=pd.qcut(df["installment"], 3) #Avec quartiles les modalités sont plus stable que avec déciles
 df["installment"].value_counts()
 q = df.head(65)
 
@@ -195,7 +194,7 @@ C4 = list(graph((stab(df,"installment"))[1]))
 C5 = list(graph((stab(df,"installment"))[2]))
 C6 = list(graph((stab(df,"installment"))[3]))
 
-phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]], 'Classe 4': [C3[3], C4[3], C5[3], C6[3]]}, index = ['2013','2014', '2015', '2016'])
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]]}, index = ['2013','2014', '2015', '2016'])
 plts = plt.plot(phique, marker = 'o')
 plt.legend(plts, phique.columns)  
 #Les classes se croisent --> VOIR SI ON GARDE
@@ -864,7 +863,6 @@ plt.legend(plts, phique.columns)   # NICEEE
 plt.hist(df["num_bc_sats"], range = (0, 20), bins = 100, color = 'yellow',
             edgecolor = 'red')
 
-df=DF4.copy()
 
 df["num_bc_sats"].describe()
 df["num_bc_sats"].value_counts()   
@@ -899,7 +897,6 @@ plt.legend(plts, phique.columns)   # 2 c'est mieux
 plt.hist(df["num_bc_tl"], range = (0, 20), bins = 100, color = 'yellow',
             edgecolor = 'red')
 
-df=DF4.copy()
 
 df["num_bc_tl"].describe()
 df["num_bc_tl"].value_counts()   
@@ -933,11 +930,9 @@ plt.legend(plts, phique.columns)   #2 c'est bof mais ça se croise pas, 3 c'est 
 
 
 #discretisation num_il_tl __________________________________________________________________________________
-
 plt.hist(df["num_il_tl"], range = (0, 20), bins = 100, color = 'yellow',
             edgecolor = 'red')
 
-df=DF4.copy()
 
 df["num_il_tl"].describe()
 df["num_il_tl"].value_counts()   
@@ -945,9 +940,7 @@ df["num_il_tl"].nunique()
 df["num_il_tl"].dtypes
 
 
-
 df["num_il_tl"]=pd.qcut(df["num_il_tl"],2)
-
 
 cont = pd.crosstab(df['num_il_tl'],df["loan_status"])
 chi2, pvalue, degrees, expected = chi2_contingency(cont)
@@ -971,13 +964,262 @@ plt.legend(plts, phique.columns) #DROPONS TA RIEN A FAIRE C NUL
 
 
 #discretisation num_rev_accts ________________________________________________________________________________
+plt.hist(df["num_rev_accts"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["num_rev_accts"].describe()
+df["num_rev_accts"].value_counts()   
+df["num_rev_accts"].nunique() 
+df["num_rev_accts"].dtypes
+
+
+df["num_rev_accts"]=pd.qcut(df["num_rev_accts"],2)
+
+cont = pd.crosstab(df['num_rev_accts'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() #les défaut
+
+C3 = list(graph((stab(df,"num_rev_accts"))[0]))
+C4 = list(graph((stab(df,"num_rev_accts"))[1]))
+C5 = list(graph((stab(df,"num_rev_accts"))[2]))
+C6 = list(graph((stab(df,"num_rev_accts"))[3]))
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns) #ON DROP C NUL
+
+
+
 #discretisation num_sats ________________________________________________________________________________
+plt.hist(df["num_sats"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["num_sats"].describe()
+df["num_sats"].value_counts()   
+df["num_sats"].nunique() 
+df["num_sats"].dtypes
+
+
+df["num_sats"]=pd.qcut(df["num_sats"],3)
+
+cont = pd.crosstab(df['num_sats'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  #SIGNIFICATIF
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() 
+
+C3 = list(graph((stab(df,"num_sats"))[0]))
+C4 = list(graph((stab(df,"num_sats"))[1]))
+C5 = list(graph((stab(df,"num_sats"))[2]))
+C6 = list(graph((stab(df,"num_sats"))[3]))
+
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns)#Stable dans le temps
+
+
+
 #discretisation tax_liens ________________________________________________________________________________
+plt.hist(df["tax_liens"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["tax_liens"].describe()
+df["tax_liens"].value_counts()   
+df["tax_liens"].nunique() 
+df["tax_liens"].dtypes
+
+
+df["tax_liens"]=np.where(df["tax_liens"]>=1, "[1;+[", "0")
+
+cont = pd.crosstab(df['tax_liens'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  #SIGNIFICATIF
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() 
+
+C3 = list(graph((stab(df,"tax_liens"))[0]))
+C4 = list(graph((stab(df,"tax_liens"))[1]))
+C5 = list(graph((stab(df,"tax_liens"))[2]))
+C6 = list(graph((stab(df,"tax_liens"))[3]))
+
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns)#Pas stable dans le temps --> on drop
+
+
+
 #discretisation total_bc_limit ________________________________________________________________________________
+plt.hist(df["total_bc_limit"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["total_bc_limit"].describe()
+df["total_bc_limit"].value_counts()   
+df["total_bc_limit"].nunique() 
+df["total_bc_limit"].dtypes
+
+
+df["total_bc_limit"]=pd.qcut(df["total_bc_limit"],3)
+
+cont = pd.crosstab(df['total_bc_limit'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  #SIGNIFICATIF
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() 
+
+C3 = list(graph((stab(df,"total_bc_limit"))[0]))
+C4 = list(graph((stab(df,"total_bc_limit"))[1]))
+C5 = list(graph((stab(df,"total_bc_limit"))[2]))
+C6 = list(graph((stab(df,"total_bc_limit"))[3]))
+
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns)
+
+
 #discretisation total_bal_ex_mort ________________________________________________________________________________
+plt.hist(df["total_bal_ex_mort"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["total_bal_ex_mort"].describe()
+df["total_bal_ex_mort"].value_counts()   
+df["total_bal_ex_mort"].nunique() 
+df["total_bal_ex_mort"].dtypes
+
+
+df["total_bal_ex_mort"]=np.where(df["total_bal_ex_mort"]>=1, "[1;+[", "0")
+
+cont = pd.crosstab(df['total_bal_ex_mort'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  #SIGNIFICATIF
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() 
+
+C3 = list(graph((stab(df,"total_bal_ex_mort"))[0]))
+C4 = list(graph((stab(df,"total_bal_ex_mort"))[1]))
+C5 = list(graph((stab(df,"total_bal_ex_mort"))[2]))
+C6 = list(graph((stab(df,"total_bal_ex_mort"))[3]))
+
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns)#catastrophe on drop
+
 #discretisation fico ________________________________________________________________________________
+plt.hist(df["fico"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["fico"].describe()
+df["fico"].value_counts()   
+df["fico"].nunique() 
+df["fico"].dtypes
+
+
+df["fico"]=pd.qcut(df["fico"], 4)
+
+cont = pd.crosstab(df['fico'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  #SIGNIFICATIF
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() 
+
+C3 = list(graph((stab(df,"fico"))[0]))
+C4 = list(graph((stab(df,"fico"))[1]))
+C5 = list(graph((stab(df,"fico"))[2]))
+C6 = list(graph((stab(df,"fico"))[3]))
+
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]], 'Classe 4': [C3[3], C4[3], C5[3], C6[3]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns)
+
+
 #discretisation earliest_cr_line ________________________________________________________________________________
+
+df=DF4.copy()
+plt.hist(df["earliest_cr_line"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["earliest_cr_line"].describe()
+df["earliest_cr_line"].value_counts()   
+df["earliest_cr_line"].nunique() 
+df["earliest_cr_line"].dtypes
+
+
+df["earliest_cr_line"]=pd.qcut(df["earliest_cr_line"], 4)
+
+cont = pd.crosstab(df['earliest_cr_line'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  #SIGNIFICATIF
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() 
+
+C3 = list(graph((stab(df,"earliest_cr_line"))[0]))
+C4 = list(graph((stab(df,"earliest_cr_line"))[1]))
+C5 = list(graph((stab(df,"earliest_cr_line"))[2]))
+C6 = list(graph((stab(df,"earliest_cr_line"))[3]))
+
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]], 'Classe 4': [C3[3], C4[3], C5[3], C6[3]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns)
+
+
 #voir addr_state ________________________________________________________________________________
+plt.hist(df["addr_state"], range = (0, 20), bins = 100, color = 'yellow',
+            edgecolor = 'red')
+
+df["addr_state"].describe()
+df["addr_state"].value_counts()   
+df["addr_state"].nunique() 
+df["addr_state"].dtypes
+
+
+df["earliest_cr_line"]=pd.qcut(df["earliest_cr_line"], 4)
+
+cont = pd.crosstab(df['addr_state'],df["loan_status"])
+chi2, pvalue, degrees, expected = chi2_contingency(cont)
+chi2, pvalue, degrees  #SIGNIFICATIF
+
+
+cont["summod"] = cont["Charged Off"] + cont["Fully Paid"]
+cont["Taux défaut toutes années"] = cont["Charged Off"]/cont["summod"]
+cont["Taux défaut toutes années"].sort_values() 
+
+C3 = list(graph((stab(df,"addr_state"))[0]))
+C4 = list(graph((stab(df,"addr_state"))[1]))
+C5 = list(graph((stab(df,"addr_state"))[2]))
+C6 = list(graph((stab(df,"addr_state"))[3]))
+
+
+phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]], 'Classe 4': [C3[3], C4[3], C5[3], C6[3]]}, index = ['2013','2014', '2015', '2016'])
+plts = plt.plot(phique, marker = 'o')
+plt.legend(plts, phique.columns)
 
 
 phique = pd.DataFrame({' Classe 1': [C3[0], C4[0], C5[0], C6[0]], 'Classe 2': [C3[1], C4[1], C5[1], C6[1]], 'Classe 3':[C3[2], C4[2], C5[2], C6[2]]}, index = ['2013','2014', '2015', '2016'])

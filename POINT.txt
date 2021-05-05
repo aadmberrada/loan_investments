@@ -3,6 +3,11 @@ A supprimer :
 - pub_rec
 - application_type
 - num_il_tl
+- num_rev_accts
+- tax_liens
+- total_bal_ex_mort
+
+
 
 Problème de nombre à virgule alors que c'est pas possible (exemple : nb de compte, nb de mois);
 - mo_sin_old_rev_tl_op
