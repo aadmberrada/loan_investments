@@ -1,0 +1,14 @@
+A supprimer :
+- total_acc
+- pub_rec
+- application_type
+- num_il_tl
+
+Problème de nombre à virgule alors que c'est pas possible (exemple : nb de compte, nb de mois);
+- mo_sin_old_rev_tl_op
+- open_acc
+- mort_acc
+
+Problème qui sera surement réglé avec le code d'Abdoul
+- num_bc_sats
+- num_bc_tl
