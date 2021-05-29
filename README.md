@@ -6,7 +6,7 @@ L’objectif est de classer les clients selon leur probabilité de finir en déf
 
 Une grille de score est un outil permettant de noter un individu en lui attribuant des points à partir de ses caractéristiques. La grille de score est calibrée sur 1000 points, plus un individu a de points moins il est risqué.
 
-Les données :  accepted_2007_to_2018Q4 présentent ici : https://www.kaggle.com/wordsforthewise/lending-club
+Les données :  accepted_2007_to_2018Q4 présentent ici => https://www.kaggle.com/wordsforthewise/lending-club
 
 Données de test : de Janvier 2017 à Décembre 2018.
 
