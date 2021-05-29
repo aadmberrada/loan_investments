@@ -3,6 +3,9 @@ On souhaite investir automatiquement notre argent au travers de la plateforme Le
 clients (peer to peer lending). Lending Club fournit des données en input qui permettent de créer un modèle d’octroi de crédit customisé afin de déterminer sur quels clients vous financeriez.
 
 L’objectif est de classer les clients selon leur probabilité de finir en défaut bancaire, ceci sera fait en créant une grille de score qui permet de segmenter la population en classes de risques homogènes.
+
 Une grille de score est un outil permettant de noter un individu en lui attribuant des points à partir de ses caractéristiques.
+
 Les données :  accepted_2007_to_2018Q4 présentent ici : https://www.kaggle.com/wordsforthewise/lending-club
+
 Données de test : de Janvier 2017 à Décembre 2018.
